@@ -1,1 +1,44 @@
 
+/* HTML과 Body의 기본 여백을 제거하고 높이를 100%로 설정 */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* 지도가 들어갈 div의 높이를 100%로 설정하여 화면을 채움 */
+#map {
+    height: 100%;
+}
+
+/* 페이지 상단 제목 스타일 */
+h1 {
+    position: absolute; /* 지도의 상단에 위치하도록 설정 */
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* 다른 지도 요소들보다 위에 표시 */
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* InfoWindow 내부 콘텐츠 스타일 (선택 사항) */
+.gm-style-iw {
+    padding: 10px!important;
+}
+
+.gm-style-iw h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+}
+
+.gm-style-iw p {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
