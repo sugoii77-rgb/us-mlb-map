@@ -13,3 +13,58 @@ function initMap() {
     // 'map' div에 새로운 지도 객체를 생성하여 할당
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 }
+// initMap 함수 내, map 객체 생성 다음 줄에 추가
+function initMap() {
+    //... (이전 지도 초기화 코드)...
+
+    // GeoJSON 파일 로드
+    map.data.loadGeoJson('data/states.geojson');
+}
+// initMap 함수 내, GeoJSON 로드 코드 다음에 추가
+function initMap() {
+    //... (이전 지도 초기화 및 GeoJSON 로드 코드)...
+
+    // 주(State) 폴리곤 스타일 설정
+    map.data.setStyle({
+        fillColor: '#4a8af4',      // 채우기 색상
+        fillOpacity: 0.35,         // 채우기 투명도
+        strokeColor: '#ffffff',    // 테두리 색상
+        strokeWeight: 1,           // 테두리 두께
+        clickable: true            // 클릭 이벤트 활성화
+    });
+
+    // 마우스 오버(mouseover) 이벤트 리스너
+    map.data.addListener('mouseover', (event) => {
+        map.data.overrideStyle(event.feature, {
+            strokeWeight: 3,
+            strokeColor: '#1a73e8'
+        });
+    });
+// 전역 변수 선언부에 추가
+let infoWindow;
+let currentMarkers =;
+
+// initMap 함수 내, 스타일 설정 코드 다음에 추가
+function initMap() {
+    //... (이전 코드)...
+
+    // InfoWindow 객체 초기화 (재사용을 위해 한 번만 생성)
+    infoWindow = new google.maps.InfoWindow();
+
+    // 주(State) 폴리곤 클릭 이벤트 리스너
+    map.data.addListener('click', (event) => {
+        // 이전에 열려있던 infoWindow 닫기
+        infoWindow.close();
+
+        // GeoJSON 속성에서 주 이름 가져오기
+        const stateName = event.feature.getProperty('NAME'); // GeoJSON 파일의 속성명에 따라 'name' 또는 'STATE_NAME' 등으로 변경 필요
+        
+        // 해당 주의 MLB 도시 마커 표시 함수 호출
+        displayMlbCities(stateName);
+    });
+}
+    // 마우스 아웃(mouseout) 이벤트 리스너
+    map.data.addListener('mouseout', (event) => {
+        map.data.revertStyle(); // 기본 스타일로 복원
+    });
+}
