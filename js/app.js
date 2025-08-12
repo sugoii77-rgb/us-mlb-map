@@ -68,3 +68,40 @@ function initMap() {
         map.data.revertStyle(); // 기본 스타일로 복원
     });
 }
+function displayMlbCities(stateName) {
+    // 1. 기존 마커 제거
+    currentMarkers.forEach(marker => marker.setMap(null));
+    currentMarkers =;
+
+    // 2. mlbData에서 해당 주 정보 찾기
+    const stateData = mlbData[stateName];
+    if (!stateData) {
+        console.log(`${stateName} 주에는 MLB 팀이 없습니다.`);
+        return;
+    }
+
+    // 3. 해당 주의 도시들을 순회하며 마커 생성
+    stateData.cities.forEach(city => {
+        const marker = new google.maps.Marker({
+            position: { lat: city.lat, lng: city.lng },
+            map: map,
+            title: city.name,
+            animation: google.maps.Animation.DROP // 마커가 떨어지는 애니메이션 효과
+        });
+
+        // 마커에 팀 정보를 저장하여 나중에 사용
+        marker.teamInfo = city.teams;
+        marker.cityName = city.name;
+
+        // 4. 각 마커에 클릭 리스너 추가
+        marker.addListener('click', function() {
+            const contentString = `<h3>${this.cityName}</h3>` +
+                                `<p>${this.teamInfo.join('<br>')}</p>`;
+            
+            infoWindow.setContent(contentString);
+            infoWindow.open(map, this);
+        });
+
+        currentMarkers.push(marker);
+    });
+}
