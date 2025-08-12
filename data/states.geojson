@@ -1,1 +1,7 @@
+// initMap 함수 내, map 객체 생성 다음 줄에 추가
+function initMap() {
+    //... (이전 지도 초기화 코드)...
 
+    // GeoJSON 파일 로드
+    map.data.loadGeoJson('data/states.geojson');
+}
